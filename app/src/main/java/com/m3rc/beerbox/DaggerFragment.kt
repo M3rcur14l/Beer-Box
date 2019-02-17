@@ -6,8 +6,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import dagger.internal.Beta
-
 import javax.inject.Inject
 
 abstract class DaggerFragment : Fragment(), HasSupportFragmentInjector {

@@ -9,10 +9,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class Application : Application(), HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+class Application : Application() {
 
     private val appComponent: AppComponent by lazy {
         DaggerAppComponent.builder()
@@ -24,7 +21,5 @@ class Application : Application(), HasSupportFragmentInjector {
         super.onCreate()
         appComponent.inject(this)
     }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
 }
