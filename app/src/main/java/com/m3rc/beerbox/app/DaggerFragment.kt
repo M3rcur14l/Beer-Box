@@ -1,4 +1,4 @@
-package com.m3rc.beerbox
+package com.m3rc.beerbox.app
 
 import android.content.Context
 import androidx.fragment.app.Fragment

@@ -27,7 +27,7 @@ class NetworkModule {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .baseUrl("https://api.punkapi.com/v2/")
             .build()
 
 }

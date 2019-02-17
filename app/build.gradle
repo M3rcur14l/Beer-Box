@@ -40,6 +40,7 @@ dependencies {
     implementation deps.androidx.coordinatorlayout
     implementation deps.androidx.recyclerview
     implementation deps.androidx.transition
+    implementation deps.material
     kapt deps.dagger.compiler
     kapt deps.dagger.androidprocessor
     implementation deps.dagger.dagger

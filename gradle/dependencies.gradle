@@ -51,11 +51,7 @@ ext.deps = [
                         espresso: "androidx.test.espresso:espresso-core:3.1.1",
                 ],
         ],
-        support    : [
-                'test': [
-                        runner: 'com.android.support.test:runner:0.5',
-                ],
-        ],
+        material   : "com.google.android.material:material:1.0.0",
         dagger     : [
                 'compiler'        : "com.google.dagger:dagger-compiler:${versions.dagger}",
                 'androidprocessor': "com.google.dagger:dagger-android-processor:${versions.dagger}",
