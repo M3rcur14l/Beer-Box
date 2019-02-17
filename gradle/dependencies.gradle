@@ -35,12 +35,12 @@ ext.deps = [
                 ],
                 'paging'           : [
                         'common' : "androidx.paging:paging-common:${versions.paging}",
-                        'rxjava2': "androidx.paging:paging-common:${versions.paging}",
+                        'rxjava2': "androidx.paging:paging-rxjava2:${versions.paging}",
                 ],
                 'room'             : [
-                        'runtime' : "androidx.paging:paging-runtime:${versions.room}",
-                        'compiler': "androidx.paging:paging-compiler:${versions.room}",
-                        'rxjava2' : "androidx.paging:paging-common:${versions.room}",
+                        'runtime' : "androidx.room:room-runtime:${versions.room}",
+                        'compiler': "androidx.room:room-compiler:${versions.room}",
+                        'rxjava2' : "androidx.room:room-rxjava2:${versions.room}",
                 ],
                 'constraintlayout' : "androidx.constraintlayout:constraintlayout:1.1.3",
                 'coordinatorlayout': "androidx.coordinatorlayout:coordinatorlayout:1.0.0",
