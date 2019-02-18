@@ -1,6 +1,7 @@
-package com.m3rc.beerbox.di.viewmodel
+package com.m3rc.beerbox.di.module
 
 import androidx.lifecycle.ViewModelProvider
+import com.m3rc.beerbox.di.provider.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 

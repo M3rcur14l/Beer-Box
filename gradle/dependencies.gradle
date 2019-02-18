@@ -27,14 +27,14 @@ ext.deps = [
                 'appcompat'        : 'androidx.appcompat:appcompat:1.0.2',
                 'corektx'          : 'androidx.core:core-ktx:1.0.1',
                 'lifecycle'        : [
-                        'common'    : "androidx.paging:paging-common:${versions.lifecycle}",
+                        'common'    : "androidx.lifecycle:lifecycle-common:${versions.lifecycle}",
                         'compiler'  : "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}",
                         'extensions': "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
                         'livedata'  : "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}",
                         'viewmodel' : "androidx.lifecycle:lifecycle-viewmodel:${versions.lifecycle}",
                 ],
                 'paging'           : [
-                        'common' : "androidx.paging:paging-common:${versions.paging}",
+                        'runtime' : "androidx.paging:paging-runtime:${versions.paging}",
                         'rxjava2': "androidx.paging:paging-rxjava2:${versions.paging}",
                 ],
                 'room'             : [

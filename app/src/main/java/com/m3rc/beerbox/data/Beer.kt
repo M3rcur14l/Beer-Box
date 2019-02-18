@@ -3,6 +3,7 @@ package com.m3rc.beerbox.data
 import com.google.gson.annotations.SerializedName
 
 data class Beer(
+    val id: Long?,
     val name: String?,
     @SerializedName("tagline") val tagLine: String?,
     val description: String?,

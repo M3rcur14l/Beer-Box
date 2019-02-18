@@ -1,4 +1,4 @@
-package com.m3rc.beerbox.di.viewmodel
+package com.m3rc.beerbox.di.provider
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

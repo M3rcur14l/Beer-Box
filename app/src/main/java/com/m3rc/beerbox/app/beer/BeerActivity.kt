@@ -9,5 +9,13 @@ class BeerActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beer)
+
+        if (savedInstanceState == null) {
+            val fragment = BeerFragment.newInstance()
+
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.m3rc.beerbox.di.viewmodel
+package com.m3rc.beerbox.di.scope
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

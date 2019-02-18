@@ -2,8 +2,9 @@ package com.m3rc.beerbox.di
 
 import com.m3rc.beerbox.BeerApplication
 import com.m3rc.beerbox.di.module.ActivityBindingModule
+import com.m3rc.beerbox.di.module.DataSourceModule
 import com.m3rc.beerbox.di.module.NetworkModule
-import com.m3rc.beerbox.di.viewmodel.ViewModelModule
+import com.m3rc.beerbox.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -16,7 +17,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class,
-        NetworkModule::class]
+        NetworkModule::class,
+        DataSourceModule::class]
 )
 interface AppComponent : AndroidInjector<BeerApplication> {
 
