@@ -1,18 +1,23 @@
 package com.m3rc.beerbox.di.module
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.m3rc.beerbox.app.beer.BeerViewModel
 import com.m3rc.beerbox.di.provider.ViewModelFactory
+import com.m3rc.beerbox.di.scope.ViewModelKey
 import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
 
 @Module
 abstract class ViewModelModule {
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
-    /*@Binds
+    @Binds
     @IntoMap
-    @ViewModelKey(ViewModel:class)
-    abstract fun bindsMoviesViewModel(moviesViewModel: ViewModel): ViewModel*/
+    @ViewModelKey(BeerViewModel::class)
+    abstract fun bindsBeerViewModel(beerViewModel: BeerViewModel): ViewModel
+
 }

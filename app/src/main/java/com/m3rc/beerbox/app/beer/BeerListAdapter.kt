@@ -1,14 +1,17 @@
 package com.m3rc.beerbox.app.beer
 
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.m3rc.beerbox.data.Beer
 
 class BeerListAdapter : PagedListAdapter<Beer, BeerViewHolder>(diffCallback) {
 
+    val beerClick = MutableLiveData<Beer>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BeerViewHolder(parent) {
-        //TODO onClick
+        beerClick.value = it
     }
 
     override fun onBindViewHolder(holder: BeerViewHolder, position: Int) {
