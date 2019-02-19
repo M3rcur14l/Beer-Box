@@ -4,9 +4,15 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.m3rc.beerbox.app.LifecycleViewModel
 import com.m3rc.beerbox.data.Beer
+import com.m3rc.beerbox.data.PunkService
+import com.m3rc.beerbox.widget.searchview.Suggestion
+import io.reactivex.Single
 import javax.inject.Inject
 
-class BeerViewModel @Inject constructor(dataSourceFactory: BeerDataSourceFactory) : LifecycleViewModel() {
+class BeerViewModel @Inject constructor(
+    dataSourceFactory: BeerDataSourceFactory,
+    private val service: PunkService
+) : LifecycleViewModel() {
 
     private val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false) //The API doesn't return the total result count =(
@@ -18,6 +24,12 @@ class BeerViewModel @Inject constructor(dataSourceFactory: BeerDataSourceFactory
         dataSourceFactory.apply { lifecycleOwner = this@BeerViewModel },
         config
     ).build()
+
+    fun getSuggestion(input: String): Single<List<Suggestion>> = service.getBeers(beerName = input, perPage = 5)
+        .toObservable()
+        .flatMapIterable { it }
+        .map { Suggestion(0, it.name ?: "") }
+        .toList()
 
     companion object {
         const val PAGE_SIZE = 20

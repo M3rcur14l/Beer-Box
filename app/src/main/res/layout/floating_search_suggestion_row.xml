@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:background="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              android:focusable="true"
+              android:orientation="horizontal"
+              android:padding="7dp">
+
+    <ImageView
+            android:id="@+id/floating_search_suggestion_icon"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:padding="10dp"
+            android:src="@drawable/beer"
+            android:tint="@color/textColor"
+            tools:ignore="ContentDescription"/>
+
+    <TextView
+            android:id="@+id/floating_search_suggestion_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="14dp"
+            android:textColor="@color/textColor"
+            tools:text="Beer suggestion"
+            android:textSize="13sp"/>
+</LinearLayout>

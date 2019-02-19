@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/search_edit_frame"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:orientation="horizontal">
+
+    <LinearLayout
+            android:id="@+id/floating_search_query_left_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="21dp"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/searchViewIconColor"
+                app:srcCompat="@drawable/ic_search"
+                tools:ignore="ContentDescription"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SearchView
+            android:id="@+id/floating_search_query_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:longClickable="false"
+            android:minHeight="48dp"
+            android:textSize="16sp"
+            app:closeIcon="@drawable/ic_close_search_view"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null"
+            app:queryHint="@string/queryHint"
+            app:searchIcon="@null"
+            app:submitBackground="@null"
+            app:suggestionRowLayout="@null"/>
+
+    <LinearLayout
+            android:id="@+id/floating_search_query_right_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="21dp"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/floating_search_query_voice"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/searchViewIconColor"
+                app:srcCompat="@drawable/ic_mic_black"
+                tools:ignore="ContentDescription"/>
+
+        <ProgressBar
+                android:id="@+id/floating_search_query_progress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:indeterminate="true"
+                android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>

@@ -20,7 +20,7 @@ class BeerFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: BeerViewModel
+    lateinit var viewModel: BeerViewModel
 
     companion object {
         fun newInstance() = BeerFragment()

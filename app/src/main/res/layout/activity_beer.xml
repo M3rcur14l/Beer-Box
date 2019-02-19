@@ -10,14 +10,20 @@
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             app:elevation="0dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         <include
                 layout="@layout/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"/>
+                android:layout_height="wrap_content"/>
+
+        <com.m3rc.beerbox.widget.searchview.FloatingSearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -26,4 +32,10 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <FrameLayout
+            android:id="@+id/suggestionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_marginTop="-5dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
