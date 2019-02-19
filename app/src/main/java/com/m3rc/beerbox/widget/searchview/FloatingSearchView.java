@@ -161,7 +161,7 @@ public class FloatingSearchView extends FrameLayout {
     }
 
     private void onSubmit(String input) {
-//        queryInputSubject.onNext(""); //To avoid reopening of debounced suggestions
+        queryInputSubject.onNext(""); //To avoid reopening of debounced suggestions
         searchView.clearFocus();
         setProgress(true);
         if (onSubmit != null)

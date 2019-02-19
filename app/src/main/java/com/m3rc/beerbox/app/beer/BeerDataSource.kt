@@ -19,6 +19,7 @@ class BeerDataSource(
 ) : PositionalDataSource<Beer>() {
 
     private var pageSize: Int = 0
+    private val beerIdSet = mutableSetOf<Long>()
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Beer>) {
         service.getBeers(
@@ -30,7 +31,13 @@ class BeerDataSource(
         )
             .subscribe(
                 { list ->
-                    callback.onResult(list)
+                    callback.onResult(
+                        list.filter { !beerIdSet.contains(it.id) }
+                            .map {
+                                it.id?.let { id -> beerIdSet.add(id) }
+                                it
+                            }
+                    )
                     if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
@@ -48,7 +55,13 @@ class BeerDataSource(
         )
             .subscribe(
                 { list ->
-                    callback.onResult(list, 1)
+                    callback.onResult(
+                        list.filter { !beerIdSet.contains(it.id) }
+                            .map {
+                                it.id?.let { id -> beerIdSet.add(id) }
+                                it
+                            }, 0
+                    )
                     if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {

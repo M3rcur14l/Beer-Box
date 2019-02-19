@@ -79,6 +79,7 @@ class BeerFragment : DaggerFragment() {
             }
             viewModel.dataSourceFactory.dataSource.invalidate()
         })
-
     }
+
+
 }

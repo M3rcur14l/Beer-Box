@@ -86,4 +86,13 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
             }
         }
     }
+
+    override fun onBackPressed() {
+        if (fragment?.viewModel?.dataSourceFactory?.beerNameFilter != null) {
+            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = null
+            searchView.cleanSearchView(true)
+            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
+        } else
+            super.onBackPressed()
+    }
 }
