@@ -1,15 +1,18 @@
 package com.m3rc.beerbox.app.beer
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.beer.BeerViewHolder.Companion.glideOptions
 import com.m3rc.beerbox.data.Beer
+import com.m3rc.beerbox.kx.color
 import kotlinx.android.synthetic.main.fragment_beer_details.*
 
 class BeerDetailsBottomDialog : BottomSheetDialogFragment() {
@@ -33,8 +36,8 @@ class BeerDetailsBottomDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            val beer = it.getParcelable<Beer?>(BEER_EXTRA)
+        arguments?.let { b ->
+            val beer = b.getParcelable<Beer?>(BEER_EXTRA)
             beer?.apply {
                 Glide.with(beerImage)
                     .load(image)
@@ -44,6 +47,9 @@ class BeerDetailsBottomDialog : BottomSheetDialogFragment() {
                 beerName.text = name
                 beerTagLine.text = tagLine
                 beerDescription.text = description
+                color()?.let {
+                    ImageViewCompat.setImageTintList(beerEbc, ColorStateList.valueOf(it))
+                }
             }
         }
 

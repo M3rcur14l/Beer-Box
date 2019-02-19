@@ -10,5 +10,6 @@ data class Beer(
     val name: String?,
     @SerializedName("tagline") val tagLine: String?,
     val description: String?,
-    @SerializedName("image_url") val image: String?
+    @SerializedName("image_url") val image: String?,
+    val ebc: Float?
 ) : Parcelable
