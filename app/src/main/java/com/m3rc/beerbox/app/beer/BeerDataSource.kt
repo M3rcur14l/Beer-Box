@@ -11,9 +11,10 @@ import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.data.PunkService
 import com.m3rc.beerbox.kx.bindToLifecycle
 
-class BeerDataSource constructor(
+class BeerDataSource(
     private val service: PunkService,
     private val beerNameFilter: String? = null,
+    private val ebcRange: ClosedFloatingPointRange<Float>? = null,
     private val lifecycleOwner: LifecycleOwner
 ) : PositionalDataSource<Beer>() {
 
@@ -23,12 +24,14 @@ class BeerDataSource constructor(
         service.getBeers(
             page = (params.startPosition / pageSize) + 1,
             perPage = params.loadSize,
-            beerName = beerNameFilter
+            beerName = beerNameFilter,
+            ebcLowerBound = ebcRange?.start?.toInt(),
+            ebcUpperBound = ebcRange?.endInclusive?.toInt()
         )
             .subscribe(
                 { list ->
                     callback.onResult(list)
-                    Bus.get().postEvent(NewBeerPageEvent(list))
+                    if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
                     Bus.get().postState(LoadingState(FAILED))
@@ -46,7 +49,7 @@ class BeerDataSource constructor(
             .subscribe(
                 { list ->
                     callback.onResult(list, 1)
-                    Bus.get().postEvent(NewBeerPageEvent(list))
+                    if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
                     Bus.get().postState(LoadingState(FAILED))

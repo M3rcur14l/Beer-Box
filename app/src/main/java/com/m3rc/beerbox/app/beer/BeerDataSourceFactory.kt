@@ -1,7 +1,6 @@
 package com.m3rc.beerbox.app.beer
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.data.PunkService
@@ -14,7 +13,8 @@ class BeerDataSourceFactory @Inject constructor(
     lateinit var dataSource: BeerDataSource
     lateinit var lifecycleOwner: LifecycleOwner
     var beerNameFilter: String? = null
+    var ebcRange: ClosedFloatingPointRange<Float>? = null
 
-    override fun create() = BeerDataSource(service, beerNameFilter, lifecycleOwner).also { dataSource = it }
+    override fun create() = BeerDataSource(service, beerNameFilter, ebcRange, lifecycleOwner).also { dataSource = it }
 
 }

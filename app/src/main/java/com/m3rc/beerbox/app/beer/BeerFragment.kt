@@ -14,10 +14,7 @@ import com.m3rc.beerbox.app.DaggerFragment
 import com.m3rc.beerbox.bus.Bus
 import com.m3rc.beerbox.bus.event.NewBeerPageEvent
 import com.m3rc.beerbox.data.Beer
-import com.m3rc.beerbox.kx.BeerType
-import com.m3rc.beerbox.kx.bindToLifecycle
-import com.m3rc.beerbox.kx.type
-import com.m3rc.beerbox.kx.viewModel
+import com.m3rc.beerbox.kx.*
 import kotlinx.android.synthetic.main.fragment_beer.*
 import javax.inject.Inject
 
@@ -56,7 +53,7 @@ class BeerFragment : DaggerFragment() {
             beerTypes.adapter = beerTypeAdapter
 
             Bus.get().subscribeToEvent(NewBeerPageEvent::class.java) { e ->
-                val typesSet = e.beerList.map { it.type().toTypedArray() }.toSet()
+                val typesSet = e.beerList.map { it.type() }.toSortedSet()
                 beerTypeAdapter.submitList(typesSet.toList())
             }.bindToLifecycle(this)
         }
@@ -66,8 +63,10 @@ class BeerFragment : DaggerFragment() {
         beerAdapter.beerClick.observe(this, Observer<Beer> {
             BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
         })
-        beerTypeAdapter.beerTypeClick.observe(this, Observer<Array<BeerType>> {
-
+        beerTypeAdapter.beerTypeClick.observe(this, Observer<BeerType> {
+            beerTypeAdapter.submitList(emptyList())
+            viewModel.dataSourceFactory.ebcRange = it.range()
+            viewModel.dataSourceFactory.dataSource.invalidate()
         })
 
     }

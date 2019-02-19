@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.m3rc.beerbox.kx.BeerType
 
-class BeerTypeListAdapter : ListAdapter<Array<BeerType>, BeerTypeViewHolder>(diffCallback) {
+class BeerTypeListAdapter : ListAdapter<BeerType, BeerTypeViewHolder>(diffCallback) {
 
-    val beerTypeClick = MutableLiveData<Array<BeerType>>()
+    val beerTypeClick = MutableLiveData<BeerType>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BeerTypeViewHolder(parent) {
         beerTypeClick.value = it
@@ -19,12 +19,12 @@ class BeerTypeListAdapter : ListAdapter<Array<BeerType>, BeerTypeViewHolder>(dif
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Array<BeerType>>() {
-            override fun areItemsTheSame(oldItem: Array<BeerType>, newItem: Array<BeerType>) =
-                oldItem.contentDeepEquals(newItem)
+        private val diffCallback = object : DiffUtil.ItemCallback<BeerType>() {
+            override fun areItemsTheSame(oldItem: BeerType, newItem: BeerType) =
+                oldItem.name == newItem.name
 
-            override fun areContentsTheSame(oldItem: Array<BeerType>, newItem: Array<BeerType>) =
-                oldItem.contentDeepEquals(newItem)
+            override fun areContentsTheSame(oldItem: BeerType, newItem: BeerType) =
+                oldItem.name == newItem.name
         }
     }
 
