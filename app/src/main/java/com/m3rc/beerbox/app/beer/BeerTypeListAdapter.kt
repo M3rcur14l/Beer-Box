@@ -8,6 +8,7 @@ import com.m3rc.beerbox.kx.BeerType
 
 class BeerTypeListAdapter : ListAdapter<BeerType, BeerTypeViewHolder>(diffCallback) {
 
+    var selectedBeerType: BeerType? = null
     val beerTypeClick = MutableLiveData<BeerType>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BeerTypeViewHolder(parent) {
@@ -15,7 +16,7 @@ class BeerTypeListAdapter : ListAdapter<BeerType, BeerTypeViewHolder>(diffCallba
     }
 
     override fun onBindViewHolder(holder: BeerTypeViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let { holder.bind(it, selectedBeerType) }
     }
 
     companion object {

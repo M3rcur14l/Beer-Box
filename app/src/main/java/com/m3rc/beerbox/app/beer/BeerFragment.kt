@@ -53,8 +53,13 @@ class BeerFragment : DaggerFragment() {
             beerTypes.adapter = beerTypeAdapter
 
             Bus.get().subscribeToEvent(NewBeerPageEvent::class.java) { e ->
-                val typesSet = e.beerList.map { it.type() }.toSortedSet()
-                beerTypeAdapter.submitList(typesSet.toList())
+                if (beerTypeAdapter.selectedBeerType == null) {
+                    val typesSet = e.beerList
+                        .map { it.type() }
+                        .filter { it != BeerType.UNKNOWN }
+                        .toSortedSet()
+                    beerTypeAdapter.submitList(typesSet.toList())
+                }
             }.bindToLifecycle(this)
         }
         viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
@@ -64,8 +69,14 @@ class BeerFragment : DaggerFragment() {
             BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
         })
         beerTypeAdapter.beerTypeClick.observe(this, Observer<BeerType> {
-            beerTypeAdapter.submitList(emptyList())
-            viewModel.dataSourceFactory.ebcRange = it.range()
+            if (it == beerTypeAdapter.selectedBeerType) {
+                beerTypeAdapter.selectedBeerType = null
+                viewModel.dataSourceFactory.ebcRange = null
+            } else {
+                beerTypeAdapter.selectedBeerType = it
+                beerTypeAdapter.submitList(listOf(it))
+                viewModel.dataSourceFactory.ebcRange = it.range()
+            }
             viewModel.dataSourceFactory.dataSource.invalidate()
         })
 
