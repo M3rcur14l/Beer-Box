@@ -3,8 +3,14 @@ package com.m3rc.beerbox.app.beer
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.BaseActivity
+import com.m3rc.beerbox.bus.Bus
+import com.m3rc.beerbox.bus.annotation.ExecutionState.*
+import com.m3rc.beerbox.bus.state.LoadingState
+import com.m3rc.beerbox.kx.bindToLifecycle
 import com.m3rc.beerbox.widget.searchview.QuerySuggestionProvider
 import com.m3rc.beerbox.widget.searchview.Suggestion
 import com.m3rc.beerbox.widget.searchview.VoiceSearchProvider
@@ -32,6 +38,17 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
                 .commit()
 
             this.fragment = fragment
+
+            Bus.get().subscribeToState(LoadingState::class.java) {
+                when (it.loadingState) {
+                    RUNNING -> searchView.setProgress(true)
+                    COMPLETED -> searchView.setProgress(false)
+                    FAILED -> {
+                        searchView.setProgress(false)
+                        Toast.makeText(this, "Network Error", LENGTH_SHORT).show()
+                    }
+                }
+            }.bindToLifecycle(this)
         }
     }
 
@@ -40,10 +57,12 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
         searchView.setVoiceSearchProvider(this)
         searchView.setQuerySuggestionProvider(this)
         searchView.setOnSubmit {
-            //TODO
+            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = it
+            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
         }
         searchView.setOnSuggestionSelected {
-            //TODO
+            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = it.entry
+            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
         }
         searchView.createSearchTextViewListener()
     }

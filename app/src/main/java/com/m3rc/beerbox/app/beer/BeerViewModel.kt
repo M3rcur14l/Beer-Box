@@ -10,7 +10,7 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class BeerViewModel @Inject constructor(
-    dataSourceFactory: BeerDataSourceFactory,
+    val dataSourceFactory: BeerDataSourceFactory,
     private val service: PunkService
 ) : LifecycleViewModel() {
 
@@ -19,19 +19,20 @@ class BeerViewModel @Inject constructor(
         .setInitialLoadSizeHint(PAGE_SIZE)
         .setPageSize(PAGE_SIZE)
         .build()
-
     val beerList = LivePagedListBuilder<Int, Beer>(
         dataSourceFactory.apply { lifecycleOwner = this@BeerViewModel },
         config
     ).build()
 
-    fun getSuggestion(input: String): Single<List<Suggestion>> = service.getBeers(beerName = input, perPage = 5)
-        .toObservable()
-        .flatMapIterable { it }
-        .map { Suggestion(0, it.name ?: "") }
-        .toList()
+    fun getSuggestion(input: String): Single<List<Suggestion>> =
+        service.getBeers(beerName = input, perPage = SUGGESTIONS)
+            .toObservable()
+            .flatMapIterable { it }
+            .map { Suggestion(0, it.name ?: "") }
+            .toList()
 
     companion object {
-        const val PAGE_SIZE = 20
+        private const val PAGE_SIZE = 20
+        private const val SUGGESTIONS = 5
     }
 }
