@@ -41,6 +41,24 @@ private val beerTypeColorMap = mapOf(
     BeerType.IMPERIAL_STOUT to Color.parseColor("#030403")
 )
 
+private val beerTypeEbcRangesMap = mapOf(
+    BeerType.UNKNOWN to -1.0..0.0,
+    BeerType.PALE_LAGER to 0.0..5.9,
+    BeerType.WITBIER to 0.0..5.9,
+    BeerType.PILSENER to 0.0..5.9,
+    BeerType.BLONDE_ALE to 6.0..7.9,
+    BeerType.WEISSBIER to 8.0..11.9,
+    BeerType.PALE_ALE to 12.0..15.9,
+    BeerType.SAISON to 16.0..19.9,
+    BeerType.EBS to 20.0..25.9,
+    BeerType.DOUBLE_IPA to 26.0..32.9,
+    BeerType.DARK_LAGER to 33.0..38.9,
+    BeerType.AMBER_ALE to 33.0..38.9,
+    BeerType.BROWN_ALE to 39.0..46.9,
+    BeerType.STOUT to 47.0..78.9,
+    BeerType.IMPERIAL_STOUT to 79.0..200.0
+)
+
 enum class BeerType {
     UNKNOWN,
     PALE_LAGER,

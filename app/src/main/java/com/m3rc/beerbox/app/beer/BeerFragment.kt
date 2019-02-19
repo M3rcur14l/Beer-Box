@@ -11,7 +11,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.DaggerFragment
+import com.m3rc.beerbox.bus.Bus
+import com.m3rc.beerbox.bus.event.NewBeerPageEvent
 import com.m3rc.beerbox.data.Beer
+import com.m3rc.beerbox.kx.BeerType
+import com.m3rc.beerbox.kx.bindToLifecycle
+import com.m3rc.beerbox.kx.type
 import com.m3rc.beerbox.kx.viewModel
 import kotlinx.android.synthetic.main.fragment_beer.*
 import javax.inject.Inject
@@ -34,20 +39,35 @@ class BeerFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = viewModel(viewModelFactory)
-        val adapter = BeerListAdapter()
+        val beerAdapter = BeerListAdapter()
+        val beerTypeAdapter = BeerTypeListAdapter()
         context?.let { context ->
+            //Beer adapter setup
+            beerList.setHasFixedSize(true)
             beerList.layoutManager = LinearLayoutManager(context)
             val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             divider.setDrawable(resources.getDrawable(R.drawable.list_divider, null))
             beerList.addItemDecoration(divider)
-            beerList.adapter = adapter
+            beerList.adapter = beerAdapter
 
+            //Beer type adapter setup
+            beerTypes.setHasFixedSize(true)
+            beerTypes.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            beerTypes.adapter = beerTypeAdapter
+
+            Bus.get().subscribeToEvent(NewBeerPageEvent::class.java) { e ->
+                val typesSet = e.beerList.map { it.type().toTypedArray() }.toSet()
+                beerTypeAdapter.submitList(typesSet.toList())
+            }.bindToLifecycle(this)
         }
         viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
-            adapter.submitList(it)
+            beerAdapter.submitList(it)
         })
-        adapter.beerClick.observe(this, Observer<Beer> {
+        beerAdapter.beerClick.observe(this, Observer<Beer> {
             BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
+        })
+        beerTypeAdapter.beerTypeClick.observe(this, Observer<Array<BeerType>> {
+
         })
 
     }

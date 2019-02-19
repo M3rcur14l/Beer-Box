@@ -5,6 +5,7 @@ import androidx.paging.PositionalDataSource
 import com.m3rc.beerbox.bus.Bus
 import com.m3rc.beerbox.bus.annotation.ExecutionState.COMPLETED
 import com.m3rc.beerbox.bus.annotation.ExecutionState.FAILED
+import com.m3rc.beerbox.bus.event.NewBeerPageEvent
 import com.m3rc.beerbox.bus.state.LoadingState
 import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.data.PunkService
@@ -27,6 +28,7 @@ class BeerDataSource constructor(
             .subscribe(
                 { list ->
                     callback.onResult(list)
+                    Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
                     Bus.get().postState(LoadingState(FAILED))
@@ -44,6 +46,7 @@ class BeerDataSource constructor(
             .subscribe(
                 { list ->
                     callback.onResult(list, 1)
+                    Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
                     Bus.get().postState(LoadingState(FAILED))

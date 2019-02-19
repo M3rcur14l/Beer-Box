@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -48,7 +47,7 @@ class BeerDetailsBottomDialog : BottomSheetDialogFragment() {
                 beerTagLine.text = tagLine
                 beerDescription.text = description
                 color()?.let {
-                    ImageViewCompat.setImageTintList(beerEbc, ColorStateList.valueOf(it))
+                    beerEbc.imageTintList = ColorStateList.valueOf(it)
                 }
             }
         }
