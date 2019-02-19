@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.data.Beer
 
-class BeerViewHolder(parent: ViewGroup, onClick: (Beer) -> (Unit)) : RecyclerView.ViewHolder(
+class BeerViewHolder(parent: ViewGroup, private val onClick: (Beer) -> (Unit)) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.row_beer, parent, false)
 ) {
     private val image = itemView.findViewById<ImageView>(R.id.beerImage)
@@ -28,6 +28,7 @@ class BeerViewHolder(parent: ViewGroup, onClick: (Beer) -> (Unit)) : RecyclerVie
         name.text = beer.name
         tagLine.text = beer.tagLine
         description.text = beer.description
+        itemView.setOnClickListener { onClick.invoke(beer) }
     }
 
     companion object {

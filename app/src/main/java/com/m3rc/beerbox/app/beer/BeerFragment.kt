@@ -19,7 +19,7 @@ class BeerFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var viewModel: BeerViewModel
+    private lateinit var viewModel: BeerViewModel
 
     companion object {
         fun newInstance() = BeerFragment()
@@ -32,19 +32,19 @@ class BeerFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = viewModel(viewModelFactory)
+        val adapter = BeerListAdapter()
         context?.let { context ->
-            viewModel = viewModel(viewModelFactory)
-            val adapter = BeerListAdapter()
-
             beerList.layoutManager = LinearLayoutManager(context)
             beerList.adapter = adapter
-            viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
-                adapter.submitList(it)
-            })
-            adapter.beerClick.observe(this, Observer<Beer> {
-                //TODO show beer details view
-            })
+
         }
+        viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
+            adapter.submitList(it)
+        })
+        adapter.beerClick.observe(this, Observer<Beer> {
+            BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
+        })
 
     }
 }
