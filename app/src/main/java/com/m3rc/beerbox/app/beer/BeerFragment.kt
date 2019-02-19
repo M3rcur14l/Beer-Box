@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.DaggerFragment
@@ -36,6 +37,9 @@ class BeerFragment : DaggerFragment() {
         val adapter = BeerListAdapter()
         context?.let { context ->
             beerList.layoutManager = LinearLayoutManager(context)
+            val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            divider.setDrawable(resources.getDrawable(R.drawable.list_divider, null))
+            beerList.addItemDecoration(divider)
             beerList.adapter = adapter
 
         }
