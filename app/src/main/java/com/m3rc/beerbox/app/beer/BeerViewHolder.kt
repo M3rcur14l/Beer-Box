@@ -19,16 +19,19 @@ class BeerViewHolder(parent: ViewGroup, private val onClick: (Beer) -> (Unit)) :
     private val tagLine = itemView.findViewById<TextView>(R.id.beerTagLine)
     private val description = itemView.findViewById<TextView>(R.id.beerDescription)
 
-    fun bind(beer: Beer) {
-        Glide.with(image)
-            .load(beer.image)
-            .transition(withCrossFade())
-            .apply(glideOptions)
-            .into(image)
-        name.text = beer.name
-        tagLine.text = beer.tagLine
-        description.text = beer.description
-        itemView.setOnClickListener { onClick.invoke(beer) }
+    fun bind(beer: Beer?) {
+        beer?.let {
+            Glide.with(image)
+                .load(beer.image)
+                .transition(withCrossFade())
+                .apply(glideOptions)
+                .into(image)
+            name.text = beer.name
+            tagLine.text = beer.tagLine
+            description.text = beer.description
+            itemView.setOnClickListener { onClick.invoke(beer) }
+        }
+
     }
 
     companion object {

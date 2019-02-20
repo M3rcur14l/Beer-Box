@@ -46,7 +46,7 @@ class BeerViewModel @Inject constructor(
     }
 
     companion object {
-        private const val PAGE_SIZE = 25
+        private const val PAGE_SIZE = 10
         private const val SUGGESTIONS = 5
     }
 }

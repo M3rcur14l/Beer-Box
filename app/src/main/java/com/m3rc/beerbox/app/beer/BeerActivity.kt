@@ -40,8 +40,9 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
             this.fragment = fragment
 
             Bus.get().subscribeToState(LoadingState::class.java) {
-                when (it.loadingState) {
-                    RUNNING -> searchView.setProgress(true)
+                when (it.state) {
+                    RUNNING_INITIAL -> searchView.setProgress(true)
+                    RUNNING -> searchView.setProgress(false)
                     COMPLETED -> searchView.setProgress(false)
                     FAILED -> {
                         searchView.setProgress(false)

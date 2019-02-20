@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.DaggerFragment
+import com.m3rc.beerbox.bus.Bus
+import com.m3rc.beerbox.bus.state.LoadingState
 import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.kx.BeerType
+import com.m3rc.beerbox.kx.bindToLifecycle
 import com.m3rc.beerbox.kx.range
 import com.m3rc.beerbox.kx.viewModel
 import kotlinx.android.synthetic.main.fragment_beer.*
@@ -74,6 +77,9 @@ class BeerFragment : DaggerFragment() {
                 .map { Pair(it, it == selectedBeerType.first) })
             viewModel.refreshList()
         })
+
+        Bus.get().subscribeToState(LoadingState::class.java) { beerAdapter.loadingState = it }
+            .bindToLifecycle(this)
     }
 
 

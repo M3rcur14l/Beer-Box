@@ -21,6 +21,7 @@ class BeerDataSource(
     private val beerIdSet = mutableSetOf<Long>()
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Beer>) {
+        Bus.get().postState(LoadingState(RUNNING))
         service.getBeers(
             page = (params.startPosition / pageSize) + 1,
             perPage = params.loadSize,
@@ -40,7 +41,7 @@ class BeerDataSource(
     }
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Beer>) {
-        Bus.get().postState(LoadingState(RUNNING))
+        Bus.get().postState(LoadingState(RUNNING_INITIAL))
         pageSize = params.pageSize
         service.getBeers(
             page = 1,
