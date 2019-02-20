@@ -3,8 +3,7 @@ package com.m3rc.beerbox.app.beer
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PositionalDataSource
 import com.m3rc.beerbox.bus.Bus
-import com.m3rc.beerbox.bus.annotation.ExecutionState.COMPLETED
-import com.m3rc.beerbox.bus.annotation.ExecutionState.FAILED
+import com.m3rc.beerbox.bus.annotation.ExecutionState.*
 import com.m3rc.beerbox.bus.event.NewBeerPageEvent
 import com.m3rc.beerbox.bus.state.LoadingState
 import com.m3rc.beerbox.data.Beer
@@ -47,11 +46,14 @@ class BeerDataSource(
     }
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Beer>) {
+        Bus.get().postState(LoadingState(RUNNING))
         pageSize = params.pageSize
         service.getBeers(
             page = 1,
             perPage = params.pageSize,
-            beerName = beerNameFilter
+            beerName = beerNameFilter,
+            ebcLowerBound = ebcRange?.start?.toInt(),
+            ebcUpperBound = ebcRange?.endInclusive?.toInt()
         )
             .subscribe(
                 { list ->
