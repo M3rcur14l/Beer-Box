@@ -57,12 +57,12 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
         searchView.setVoiceSearchProvider(this)
         searchView.setQuerySuggestionProvider(this)
         searchView.setOnSubmit {
-            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = it
-            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
+            fragment?.viewModel?.beerNameFilter = it
+            fragment?.viewModel?.refreshList()
         }
         searchView.setOnSuggestionSelected {
-            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = it.entry
-            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
+            fragment?.viewModel?.beerNameFilter = it.entry
+            fragment?.viewModel?.refreshList()
         }
         searchView.createSearchTextViewListener()
     }
@@ -88,10 +88,10 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
     }
 
     override fun onBackPressed() {
-        if (fragment?.viewModel?.dataSourceFactory?.beerNameFilter != null) {
-            fragment?.viewModel?.dataSourceFactory?.beerNameFilter = null
+        if (fragment?.viewModel?.beerNameFilter != null) {
+            fragment?.viewModel?.beerNameFilter = null
             searchView.cleanSearchView(true)
-            fragment?.viewModel?.dataSourceFactory?.dataSource?.invalidate()
+            fragment?.viewModel?.refreshList()
         } else
             super.onBackPressed()
     }

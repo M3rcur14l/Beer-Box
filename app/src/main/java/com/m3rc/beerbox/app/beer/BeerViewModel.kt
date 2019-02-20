@@ -10,7 +10,7 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class BeerViewModel @Inject constructor(
-    val dataSourceFactory: BeerDataSourceFactory,
+    private val dataSourceFactory: BeerDataSourceFactory,
     private val service: PunkService
 ) : LifecycleViewModel() {
 
@@ -23,6 +23,16 @@ class BeerViewModel @Inject constructor(
         dataSourceFactory.apply { lifecycleOwner = this@BeerViewModel },
         config
     ).build()
+    var beerNameFilter: String?
+        get() = dataSourceFactory.beerNameFilter
+        set(value) {
+            dataSourceFactory.beerNameFilter = value
+        }
+    var ebcRange: ClosedFloatingPointRange<Float>?
+        get() = dataSourceFactory.ebcRange
+        set(value) {
+            dataSourceFactory.ebcRange = value
+        }
 
     fun getSuggestion(input: String): Single<List<Suggestion>> =
         service.getBeers(beerName = input, perPage = SUGGESTIONS)
@@ -30,6 +40,10 @@ class BeerViewModel @Inject constructor(
             .flatMapIterable { it }
             .map { Suggestion(0, it.name ?: "") }
             .toList()
+
+    fun refreshList() {
+        dataSourceFactory.dataSource.invalidate()
+    }
 
     companion object {
         private const val PAGE_SIZE = 25

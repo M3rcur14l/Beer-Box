@@ -64,15 +64,15 @@ class BeerFragment : DaggerFragment() {
         })
         beerTypeAdapter.beerTypeClick.observe(this, Observer<Pair<BeerType, Boolean>> { selectedBeerType ->
             if (selectedBeerType.second) {
-                viewModel.dataSourceFactory.ebcRange = selectedBeerType.first.range()
+                viewModel.ebcRange = selectedBeerType.first.range()
             } else {
-                viewModel.dataSourceFactory.ebcRange = null
+                viewModel.ebcRange = null
             }
             beerTypeAdapter.submitList(BeerType.values()
                 .toList()
                 .filter { it != BeerType.UNKNOWN }
                 .map { Pair(it, it == selectedBeerType.first) })
-            viewModel.dataSourceFactory.dataSource.invalidate()
+            viewModel.refreshList()
         })
     }
 
