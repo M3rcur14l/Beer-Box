@@ -13,13 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <include
-                layout="@layout/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <include layout="@layout/toolbar"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"/>
 
         <com.m3rc.beerbox.widget.searchview.FloatingSearchView
                 android:id="@+id/searchView"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -35,6 +36,8 @@
             android:id="@+id/suggestionContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:visibility="gone"
             android:layout_marginTop="-5dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

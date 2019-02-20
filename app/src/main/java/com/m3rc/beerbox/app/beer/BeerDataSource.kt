@@ -30,13 +30,7 @@ class BeerDataSource(
         )
             .subscribe(
                 { list ->
-                    callback.onResult(
-                        list.filter { !beerIdSet.contains(it.id) }
-                            .map {
-                                it.id?.let { id -> beerIdSet.add(id) }
-                                it
-                            }
-                    )
+                    callback.onResult(computeList(list))
                     if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
@@ -57,13 +51,7 @@ class BeerDataSource(
         )
             .subscribe(
                 { list ->
-                    callback.onResult(
-                        list.filter { !beerIdSet.contains(it.id) }
-                            .map {
-                                it.id?.let { id -> beerIdSet.add(id) }
-                                it
-                            }, 0
-                    )
+                    callback.onResult(computeList(list), 0)
                     if (!list.isEmpty()) Bus.get().postEvent(NewBeerPageEvent(list))
                     Bus.get().postState(LoadingState(COMPLETED))
                 }, {
@@ -71,4 +59,11 @@ class BeerDataSource(
                 })
             .bindToLifecycle(lifecycleOwner)
     }
+
+    private fun computeList(list: List<Beer>) =
+        list.filter { !beerIdSet.contains(it.id) }
+            .map {
+                it.id?.let { id -> beerIdSet.add(id) }
+                it
+            }
 }
