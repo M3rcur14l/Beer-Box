@@ -35,12 +35,14 @@
               tools:text="Single Hop IPA Series - 2011."/>
     <TextView android:id="@+id/beerDescription"
               android:layout_width="0dp"
+              app:layout_constraintVertical_chainStyle="packed"
               android:layout_height="wrap_content"
-              app:layout_constraintBottom_toBottomOf="@id/moreInfo"
+              app:layout_constraintBottom_toTopOf="@id/moreInfo"
               app:layout_constraintLeft_toLeftOf="@id/beerName"
               app:layout_constraintTop_toBottomOf="@id/beerTagLine"
               android:fontFamily="@font/font_lato_regular"
               android:maxLines="2"
+              app:layout_constraintVertical_bias="1"
               android:ellipsize="end"
               app:layout_constraintRight_toRightOf="parent"
               tools:text="Good old Bramling Cross is elegant, refined, assured, (boring) and understated. Understated that is unless you hop the living daylights out of a beer with it. This is Bramling Cross re-invented and re-imagined, and shows just what can be done with English hops if you use enough of them. Poor Bramling Cross normally gets lost in a woeful stream of conformist brown ales made by sleepy cask ale brewers. But not anymore. This beer shows that British hops do have some soul, and is a fruity riot of blackberries, pears, and plums. Reminds me of the bramble, apple and ginger jam my grandmother used to make."/>
@@ -48,8 +50,10 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="@color/colorAccent"
+              app:layout_constraintTop_toBottomOf="@id/beerDescription"
               app:layout_constraintLeft_toLeftOf="@id/beerName"
               android:fontFamily="@font/font_lato_semibold"
+              app:layout_constraintVertical_bias="1"
               app:layout_constraintBottom_toBottomOf="parent"
               android:textAllCaps="true"
               android:text="@string/more_info"/>
