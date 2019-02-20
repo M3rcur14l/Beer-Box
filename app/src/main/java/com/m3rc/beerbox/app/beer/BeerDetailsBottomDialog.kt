@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.m3rc.beerbox.R
-import com.m3rc.beerbox.app.beer.BeerViewHolder.Companion.glideOptions
+import com.m3rc.beerbox.app.beer.viewholder.BeerViewHolder.Companion.glideOptions
 import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.kx.color
 import kotlinx.android.synthetic.main.fragment_beer_details.*

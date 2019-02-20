@@ -1,37 +1,29 @@
 package com.m3rc.beerbox.app.beer
 
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import com.m3rc.beerbox.app.LifecycleViewModel
-import com.m3rc.beerbox.data.Beer
+import com.m3rc.beerbox.app.beer.data.BeerRepository
 import com.m3rc.beerbox.data.PunkService
 import com.m3rc.beerbox.widget.searchview.Suggestion
 import io.reactivex.Single
 import javax.inject.Inject
 
+private const val SUGGESTIONS = 5
+
 class BeerViewModel @Inject constructor(
-    private val dataSourceFactory: BeerDataSourceFactory,
+    private val beerRepository: BeerRepository,
     private val service: PunkService
 ) : LifecycleViewModel() {
 
-    private val config = PagedList.Config.Builder()
-        .setEnablePlaceholders(false) //The API doesn't return the total result count =(
-        .setInitialLoadSizeHint(PAGE_SIZE)
-        .setPageSize(PAGE_SIZE)
-        .build()
-    val beerList = LivePagedListBuilder<Int, Beer>(
-        dataSourceFactory.apply { lifecycleOwner = this@BeerViewModel },
-        config
-    ).build()
+    val beerList = beerRepository.getPagedList(this)
     var beerNameFilter: String?
-        get() = dataSourceFactory.beerNameFilter
+        get() = beerRepository.beerNameFilter
         set(value) {
-            dataSourceFactory.beerNameFilter = value
+            beerRepository.beerNameFilter = value
         }
     var ebcRange: ClosedFloatingPointRange<Float>?
-        get() = dataSourceFactory.ebcRange
+        get() = beerRepository.ebcRange
         set(value) {
-            dataSourceFactory.ebcRange = value
+            beerRepository.ebcRange = value
         }
 
     fun getSuggestion(input: String): Single<List<Suggestion>> =
@@ -41,12 +33,20 @@ class BeerViewModel @Inject constructor(
             .map { Suggestion(0, it.name ?: "") }
             .toList()
 
-    fun refreshList() {
-        dataSourceFactory.dataSource.invalidate()
+    fun refreshList(beerNameFilter: String? = null) {
+        this.beerNameFilter = beerNameFilter
+        beerRepository.invalidate()
     }
 
-    companion object {
-        private const val PAGE_SIZE = 25
-        private const val SUGGESTIONS = 5
+    fun refreshList(ebcRange: ClosedFloatingPointRange<Float>? = null) {
+        this.ebcRange = ebcRange
+        beerRepository.invalidate()
     }
+
+    fun refreshList() {
+        this.beerNameFilter = null
+        this.ebcRange = null
+        beerRepository.invalidate()
+    }
+
 }

@@ -31,40 +31,35 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
         if (savedInstanceState == null) {
             val fragment = BeerFragment.newInstance()
 
-            setupSearchView()
-
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
                 .commit()
 
             this.fragment = fragment
-
-            Bus.get().subscribeToState(LoadingState::class.java) {
-                when (it.state) {
-                    RUNNING_INITIAL -> searchView.setProgress(true)
-                    RUNNING -> searchView.setProgress(false)
-                    COMPLETED -> searchView.setProgress(false)
-                    FAILED -> {
-                        searchView.setProgress(false)
-                        Toast.makeText(this, "Network Error", LENGTH_SHORT).show()
-                    }
-                }
-            }.bindToLifecycle(this)
+        } else {
+            this.fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as BeerFragment
         }
+        setupSearchView()
+
+        Bus.get().subscribeToState(LoadingState::class.java) {
+            when (it.state) {
+                RUNNING_INITIAL -> searchView.setProgress(true)
+                RUNNING -> searchView.setProgress(false)
+                COMPLETED -> searchView.setProgress(false)
+                FAILED -> {
+                    searchView.setProgress(false)
+                    Toast.makeText(this, "Network Error", LENGTH_SHORT).show()
+                }
+            }
+        }.bindToLifecycle(this)
     }
 
     private fun setupSearchView() {
         searchView.setSuggestionsContainer(suggestionContainer)
         searchView.setVoiceSearchProvider(this)
         searchView.setQuerySuggestionProvider(this)
-        searchView.setOnSubmit {
-            fragment?.viewModel?.beerNameFilter = it
-            fragment?.viewModel?.refreshList()
-        }
-        searchView.setOnSuggestionSelected {
-            fragment?.viewModel?.beerNameFilter = it.entry
-            fragment?.viewModel?.refreshList()
-        }
+        searchView.setOnSubmit { fragment?.viewModel?.refreshList(it) }
+        searchView.setOnSuggestionSelected { fragment?.viewModel?.refreshList(it.entry) }
         searchView.createSearchTextViewListener()
     }
 
@@ -89,11 +84,9 @@ class BeerActivity : BaseActivity(), VoiceSearchProvider, QuerySuggestionProvide
     }
 
     override fun onBackPressed() {
-        if (fragment?.viewModel?.beerNameFilter != null) {
-            fragment?.viewModel?.beerNameFilter = null
+        if (fragment?.onBackPressed() == true)
             searchView.cleanSearchView(true)
-            fragment?.viewModel?.refreshList()
-        } else
+        else
             super.onBackPressed()
     }
 }

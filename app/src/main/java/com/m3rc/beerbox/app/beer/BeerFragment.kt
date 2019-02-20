@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.DaggerFragment
+import com.m3rc.beerbox.app.beer.adapter.BeerListAdapter
+import com.m3rc.beerbox.app.beer.adapter.BeerTypeListAdapter
 import com.m3rc.beerbox.bus.Bus
 import com.m3rc.beerbox.bus.state.LoadingState
 import com.m3rc.beerbox.data.Beer
@@ -26,6 +28,7 @@ class BeerFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: BeerViewModel
+    lateinit private var beerTypeAdapter: BeerTypeListAdapter
 
     companion object {
         fun newInstance() = BeerFragment()
@@ -35,12 +38,13 @@ class BeerFragment : DaggerFragment() {
         return inflater.inflate(R.layout.fragment_beer, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = viewModel(viewModelFactory)
         val beerAdapter = BeerListAdapter()
-        val beerTypeAdapter = BeerTypeListAdapter()
+        beerTypeAdapter = BeerTypeListAdapter()
         context?.let { context ->
             //Beer adapter setup
             beerList.setHasFixedSize(true)
@@ -54,10 +58,7 @@ class BeerFragment : DaggerFragment() {
             beerTypes.setHasFixedSize(true)
             beerTypes.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             beerTypes.adapter = beerTypeAdapter
-            beerTypeAdapter.submitList(BeerType.values()
-                .toList()
-                .filter { it != BeerType.UNKNOWN }
-                .map { Pair(it, false) })
+            refreshBeerTypes()
         }
         viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
             beerAdapter.submitList(it)
@@ -65,21 +66,29 @@ class BeerFragment : DaggerFragment() {
         beerAdapter.beerClick.observe(this, Observer<Beer> {
             BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
         })
-        beerTypeAdapter.beerTypeClick.observe(this, Observer<Pair<BeerType, Boolean>> { selectedBeerType ->
-            if (selectedBeerType.second) {
-                viewModel.ebcRange = selectedBeerType.first.range()
-            } else {
-                viewModel.ebcRange = null
-            }
-            beerTypeAdapter.submitList(BeerType.values()
-                .toList()
-                .filter { it != BeerType.UNKNOWN }
-                .map { Pair(it, it == selectedBeerType.first) })
-            viewModel.refreshList()
+        beerTypeAdapter.beerTypeClick.observe(this, Observer<Pair<BeerType, Boolean>> { type ->
+            refreshBeerTypes(type)
+            viewModel.refreshList(ebcRange = if (type.second) type.first.range() else null)
         })
 
         Bus.get().subscribeToState(LoadingState::class.java) { beerAdapter.loadingState = it }
             .bindToLifecycle(this)
+    }
+
+    private fun refreshBeerTypes(selectedType: Pair<BeerType, Boolean>? = null) {
+        beerTypeAdapter.submitList(BeerType.values()
+            .toList()
+            .filter { it != BeerType.UNKNOWN }
+            .map { Pair(it, it == selectedType?.first) })
+    }
+
+    fun onBackPressed(): Boolean {
+        return if (viewModel.beerNameFilter != null || viewModel.ebcRange != null) {
+            refreshBeerTypes()
+            viewModel.refreshList()
+            true
+        } else
+            false
     }
 
 

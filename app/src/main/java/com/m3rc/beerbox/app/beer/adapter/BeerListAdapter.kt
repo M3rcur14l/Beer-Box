@@ -1,4 +1,4 @@
-package com.m3rc.beerbox.app.beer
+package com.m3rc.beerbox.app.beer.adapter
 
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
@@ -6,6 +6,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.m3rc.beerbox.R
+import com.m3rc.beerbox.app.beer.viewholder.BeerViewHolder
+import com.m3rc.beerbox.app.beer.viewholder.ProgressViewHolder
 import com.m3rc.beerbox.bus.annotation.ExecutionState.RUNNING
 import com.m3rc.beerbox.bus.state.LoadingState
 import com.m3rc.beerbox.data.Beer

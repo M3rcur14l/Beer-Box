@@ -1,4 +1,4 @@
-package com.m3rc.beerbox.app.beer
+package com.m3rc.beerbox.app.beer.viewholder
 
 import android.view.LayoutInflater
 import android.view.View

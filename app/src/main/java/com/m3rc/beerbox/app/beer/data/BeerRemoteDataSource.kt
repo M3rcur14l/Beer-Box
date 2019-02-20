@@ -1,4 +1,4 @@
-package com.m3rc.beerbox.app.beer
+package com.m3rc.beerbox.app.beer.data
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PositionalDataSource
@@ -10,7 +10,7 @@ import com.m3rc.beerbox.data.Beer
 import com.m3rc.beerbox.data.PunkService
 import com.m3rc.beerbox.kx.bindToLifecycle
 
-class BeerDataSource(
+class BeerRemoteDataSource(
     private val service: PunkService,
     private val beerNameFilter: String? = null,
     private val ebcRange: ClosedFloatingPointRange<Float>? = null,
