@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.app.DaggerFragment
-import com.m3rc.beerbox.bus.Bus
-import com.m3rc.beerbox.bus.event.NewBeerPageEvent
 import com.m3rc.beerbox.data.Beer
-import com.m3rc.beerbox.kx.*
+import com.m3rc.beerbox.kx.BeerType
+import com.m3rc.beerbox.kx.range
+import com.m3rc.beerbox.kx.viewModel
 import kotlinx.android.synthetic.main.fragment_beer.*
 import javax.inject.Inject
 
@@ -51,16 +51,10 @@ class BeerFragment : DaggerFragment() {
             beerTypes.setHasFixedSize(true)
             beerTypes.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             beerTypes.adapter = beerTypeAdapter
-
-            Bus.get().subscribeToEvent(NewBeerPageEvent::class.java) { e ->
-                if (beerTypeAdapter.selectedBeerType == null) {
-                    val typesSet = e.beerList
-                        .map { it.type() }
-                        .filter { it != BeerType.UNKNOWN }
-                        .toSortedSet()
-                    beerTypeAdapter.submitList(typesSet.toList())
-                }
-            }.bindToLifecycle(this)
+            beerTypeAdapter.submitList(BeerType.values()
+                .toList()
+                .filter { it != BeerType.UNKNOWN }
+                .map { Pair(it, false) })
         }
         viewModel.beerList.observe(this, Observer<PagedList<Beer>> {
             beerAdapter.submitList(it)
@@ -68,15 +62,16 @@ class BeerFragment : DaggerFragment() {
         beerAdapter.beerClick.observe(this, Observer<Beer> {
             BeerDetailsBottomDialog.newInstance(it).show(childFragmentManager, "Beer Details")
         })
-        beerTypeAdapter.beerTypeClick.observe(this, Observer<BeerType> {
-            if (it == beerTypeAdapter.selectedBeerType) {
-                beerTypeAdapter.selectedBeerType = null
-                viewModel.dataSourceFactory.ebcRange = null
+        beerTypeAdapter.beerTypeClick.observe(this, Observer<Pair<BeerType, Boolean>> { selectedBeerType ->
+            if (selectedBeerType.second) {
+                viewModel.dataSourceFactory.ebcRange = selectedBeerType.first.range()
             } else {
-                beerTypeAdapter.selectedBeerType = it
-                beerTypeAdapter.submitList(listOf(it))
-                viewModel.dataSourceFactory.ebcRange = it.range()
+                viewModel.dataSourceFactory.ebcRange = null
             }
+            beerTypeAdapter.submitList(BeerType.values()
+                .toList()
+                .filter { it != BeerType.UNKNOWN }
+                .map { Pair(it, it == selectedBeerType.first) })
             viewModel.dataSourceFactory.dataSource.invalidate()
         })
     }

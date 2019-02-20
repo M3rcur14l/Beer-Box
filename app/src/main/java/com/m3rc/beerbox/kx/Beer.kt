@@ -57,20 +57,20 @@ private val beerTypeEbcRangesMap = mapOf(
     BeerType.IMPERIAL_STOUT to 79.0f..400.0f
 )
 
-enum class BeerType {
-    UNKNOWN,
-    PALE_LAGER,
-    BLONDE_ALE,
-    WEISSBIER,
-    PALE_ALE,
-    SAISON,
-    EBS,
-    DOUBLE_IPA,
-    DARK_LAGER,
-    AMBER_ALE,
-    BROWN_ALE,
-    STOUT,
-    IMPERIAL_STOUT
+enum class BeerType(val displayName: String) {
+    UNKNOWN("Unknown"),
+    PALE_LAGER("Pale Lager"),
+    BLONDE_ALE("Blonde Ale"),
+    WEISSBIER("Weissbier"),
+    PALE_ALE("Pale Ale"),
+    SAISON("Saison"),
+    EBS("EBS"),
+    DOUBLE_IPA("Double IPA"),
+    DARK_LAGER("Dark Lager"),
+    AMBER_ALE("Amber Ale"),
+    BROWN_ALE("Brown Ale"),
+    STOUT("Stout"),
+    IMPERIAL_STOUT("Imperial Stout")
 }
 
 

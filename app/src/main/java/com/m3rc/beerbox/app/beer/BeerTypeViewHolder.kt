@@ -7,16 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.m3rc.beerbox.R
 import com.m3rc.beerbox.kx.BeerType
 
-class BeerTypeViewHolder(parent: ViewGroup, private val onClick: (BeerType) -> (Unit)) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.beer_type_button, parent, false)
-) {
+class BeerTypeViewHolder(parent: ViewGroup, private val onClick: (Pair<BeerType, Boolean>) -> (Unit)) :
+    RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.beer_type_button, parent, false)
+    ) {
     private val beerType = itemView.findViewById<ToggleButton>(R.id.beerType)
 
-    fun bind(beerTypes: BeerType, selectedBeerType: BeerType?) {
-        beerType.text = beerTypes.name
-        beerType.textOn = beerTypes.name
-        beerType.textOff = beerTypes.name
-        beerType.setOnClickListener { onClick.invoke(beerTypes) }
-        beerType.isChecked = selectedBeerType?.equals(beerTypes) ?: false
+    fun bind(beerTypes: Pair<BeerType, Boolean>) {
+        beerType.text = beerTypes.first.displayName
+        beerType.textOn = beerTypes.first.displayName
+        beerType.textOff = beerTypes.first.displayName
+        beerType.setOnClickListener { onClick.invoke(Pair(beerTypes.first, !beerTypes.second)) }
+        beerType.isChecked = beerTypes.second
     }
 }
