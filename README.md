@@ -1,6 +1,6 @@
 # Beer-Box
 
-An open source app in order to show how to usage of many libraries:
+An open source app in order to show the usage of many libraries:
 * Paging Library
 * Dagger
 * RxJava
